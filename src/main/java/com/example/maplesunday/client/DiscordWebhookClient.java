@@ -71,4 +71,5 @@ public class DiscordWebhookClient {
                 response.path("id").asText("").isBlank()) {
                 throw new IllegalStateException("Discord message not confirmed");
         }
+    }
 }
