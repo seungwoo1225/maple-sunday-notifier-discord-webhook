@@ -42,9 +42,11 @@ public class NoticeService {
         EventNotice selected=fresh.stream().filter(n -> n.endsAt()!=null && now.isBefore(n.endsAt().toInstant()))
                 .max(ORDER).orElse(null);
         String sent=state.lastSentNoticeId();
-        if(selected!=null) {
-            discord.send(selected); // Must succeed before advancing cursor.
-            sent=selected.id();
+        if (selected != null) {
+            List<String> images = nexon.fetchEventImages(selected.id());
+            log.info("Found {} event images", images.size());
+            discord.send(selected, images);
+            sent = selected.id();
             log.info("Discord delivered notice ID={}", selected.id());
         } else log.info("All new Sunday notices expired or have no event end date");
         // Advance beyond all notices observed, even those we intentionally skipped.

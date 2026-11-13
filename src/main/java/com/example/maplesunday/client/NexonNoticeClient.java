@@ -54,4 +54,45 @@ public class NexonNoticeClient {
             catch(DateTimeParseException ex) { throw new IllegalStateException("Invalid event date: " + s, ex); }
         }
     }
+    public List<String> fetchEventImages(String noticeId) {
+        JsonNode detail = Retry.run("Nexon event detail", () ->
+            client.get()
+                .uri(uriBuilder -> uriBuilder
+                    .path("/maplestory/v1/notice-event/detail")
+                    .queryParam("notice_id", noticeId)
+                    .build())
+                .header("x-nxopen-api-key", key)
+                .retrieve()
+                .body(JsonNode.class)
+        );
+
+        if (detail == null || !detail.path("contents").isTextual()) {
+            throw new IllegalStateException(
+                "공지 상세 본문이 없습니다: " + noticeId
+            );
+        }
+
+        String html = detail.path("contents").asText();
+
+        return org.jsoup.Jsoup.parse(html)
+            .select("img")
+            .stream()
+            .map(img -> {
+                String src = img.hasAttr("data-src")
+                    ? img.attr("data-src")
+                    : img.attr("src");
+
+                if (src.isBlank()) return "";
+
+                if (src.startsWith("//")) {
+                    return "https:" + src;
+                }
+
+                return src;
+            })
+            .filter(src -> src.startsWith("https://"))
+            .distinct()
+            .limit(9)
+            .toList();
+    }
 }
