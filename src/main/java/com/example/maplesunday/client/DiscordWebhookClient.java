@@ -14,10 +14,7 @@ public class DiscordWebhookClient {
     private final RestClient client=RestClient.create();
     private final String url;
     public DiscordWebhookClient(@Value("${app.discord.webhook-url}") String url) { this.url=url; }
-    public void send(EventNotice n) {
-        if (!url.matches("https://(?:discord\\.com|discordapp\\.com)/api/webhooks/[0-9]+/[^/?#]+(?:\\?.*)?"))
-            throw new IllegalStateException("DISCORD_WEBHOOK_URL is missing or invalid");
-                public void send(EventNotice n, List<String> images) {
+    public void send(EventNotice n, List<String> images) {
         if (!url.matches(
                 "https://(?:discord\\.com|discordapp\\.com)/api/webhooks/[0-9]+/[^/?#]+(?:\\?.*)?"
         )) {
