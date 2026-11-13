@@ -1,0 +1,15 @@
+spring:
+  main:
+    web-application-type: none
+    banner-mode: off
+app:
+  nexon:
+    api-key: ${NEXON_API_KEY:}
+    base-url: ${NEXON_BASE_URL:https://open.api.nexon.com}
+  discord:
+    webhook-url: ${DISCORD_WEBHOOK_URL:}
+  storage:
+    path: ${STATE_FILE:./state.json}
+logging:
+  level:
+    com.example.maplesunday: INFO
