@@ -1,6 +1,6 @@
 {
-  "initialized": false,
-  "lastProcessedNoticeId": null,
-  "lastProcessedNoticeDate": null,
-  "lastSentNoticeId": null
+  "initialized" : true,
+  "lastProcessedNoticeId" : "1409",
+  "lastProcessedNoticeDate" : "2026-11-13T10:00:00+09:00",
+  "lastSentNoticeId" : "1409"
 }
